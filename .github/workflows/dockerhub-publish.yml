@@ -4,9 +4,10 @@ on:
   push:
     branches:
       - main
+      - master
 
 env:
-  IMAGE_NAME: tetpee-deploy
+  IMAGE_NAME: tetpee-2026-demo-deploy
 
 jobs:
   docker:
@@ -41,14 +42,14 @@ jobs:
         uses: docker/build-push-action@v6
         with:
           context: .
-          file: Dockerfile
+          file: TetPee.Api/Dockerfile
           push: true
           tags: ${{ steps.meta.outputs.tags }}
           labels: ${{ steps.meta.outputs.labels }}
           cache-from: type=gha
           cache-to: type=gha,mode=max
 
-#     - name: Trigger Render Deploy
-#       if: github.ref == 'refs/heads/main' || github.ref == 'refs/heads/master'
-#       run: |
-#         curl -f ${{ secrets.RENDER_DEPLOY_HOOK_URL }}
+#      - name: Trigger Render Deploy
+#        if: github.ref == 'refs/heads/main' || github.ref == 'refs/heads/master'
+#        run: |
+#          curl -f ${{ secrets.RENDER_DEPLOY_HOOK_URL }}
