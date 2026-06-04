@@ -1,0 +1,36 @@
+using TetPee.Repository.Abstraction;
+
+namespace TetPee.Repository.Entity;
+
+public class User: BaseEntity<Guid>, IAuditableEntity
+{
+    public required string Email { get; set; }
+    public required string FirstName  { get; set; }
+    public required string LastName { get; set; }
+    public string? ImageUrl { get; set; } = null;
+    public string? PhoneNumber { get; set; }
+    public required string HashedPassword { get; set; }
+    public string? Address { get; set; }
+    public string Role { get; set; } = "User";// User, Seller, Admin
+    public bool IsVerify { get; set; } = false; // khi user register thì phải verify email hợp lệ
+    public int VerifyCode  { get; set; } // Mã verify gửi về email
+    public string? DateOfBirth { get; set; } = null;
+   
+    public Seller? Seller { get; set; }
+    
+    public Cart Cart { get; set; }
+    public ICollection<Order>  Orders { get; set; } = new List<Order>();
+    //mối qh một nhiều cho ORM nó generate xuống db
+    
+    public DateTimeOffset CreatedAt { get; set; }
+    public DateTimeOffset? UpdatedAt { get; set; }//nullable vì chưa update lần nào
+    // tách ra những field trong interface để tái sử dụng, 
+    // còn kế thừa thì bắt buộc phải có các field đó
+    // BaseEntity:
+        // Dùng cho Id + Soft Delete
+        // Entity nào cũng cần
+    // Interface:
+        // Entity nào cần audit thì implement
+        // Không bắt buộc tất cả
+    // Soft Delete // Tránh xung đột khóa ngoại (FK Constraint)
+}
